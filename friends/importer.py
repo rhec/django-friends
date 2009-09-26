@@ -86,7 +86,7 @@ def import_google(authsub_token, user):
     import logging
     logging.debug("doing google import")
     contacts_service = gdata.contacts.service.ContactsService()
-    contacts_service.auth_token = authsub_token
+    #contacts_service.auth_token = authsub_token
     #contacts_service.UpgradeToSessionToken()
     contacts_service.UpgradeToSessionToken(authsub_token) 
     entries = []
