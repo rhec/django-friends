@@ -83,10 +83,12 @@ def import_google(authsub_token, user):
     
     Returns a tuple of (number imported, total number of entries).
     """
-    
+    import logging
+    logging.debug("doing google import")
     contacts_service = gdata.contacts.service.ContactsService()
     contacts_service.auth_token = authsub_token
-    contacts_service.UpgradeToSessionToken()
+    #contacts_service.UpgradeToSessionToken()
+    contacts_service.UpgradeToSessionToken(authsub_token) 
     entries = []
     feed = contacts_service.GetContactsFeed()
     entries.extend(feed.entry)
