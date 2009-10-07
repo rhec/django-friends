@@ -53,11 +53,11 @@ class InviteFriendForm(UserForm):
         to_user = User.objects.get(username=self.cleaned_data["to_user"])
         previous_invitations_to = FriendshipInvitation.objects.filter(to_user=to_user, from_user=self.user).exclude(status='8')
         if previous_invitations_to.count() > 0:
-            raise forms.ValidationError(u"Already requested friendship with %s" % to_user.get_profile.get_full_name)
+            raise forms.ValidationError(u"Already requested friendship with %s" % to_user.get_profile().get_full_name())
         # check inverse
         previous_invitations_from = FriendshipInvitation.objects.filter(to_user=self.user, from_user=to_user).exclude(status='8')
         if previous_invitations_from.count() > 0:
-            raise forms.ValidationError(u"%s has already requested friendship with you" % to_user.get_profile.get_full_name)
+            raise forms.ValidationError(u"%s has already requested friendship with you" % to_user.get_profile().get_full_name())
         return self.cleaned_data
     
     def save(self):
@@ -68,5 +68,5 @@ class InviteFriendForm(UserForm):
         if notification:
             notification.send([to_user], "friends_invite", {"invitation": invitation})
             notification.send([self.user], "friends_invite_sent", {"invitation": invitation})
-        self.user.message_set.create(message="Friendship requested with %s" % to_user.get_profile.get_full_name) # @@@ make link like notification
+        self.user.message_set.create(message="Friendship requested with %s" % to_user.get_profile().get_full_name()) # @@@ make link like notification
         return invitation
